@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "355209409928",
+    "project_id": "redact-191202",
+    "storage_bucket": "redact-191202.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:355209409928:android:b4a72426063242e0b6763d",
+        "android_client_info": {
+          "package_name": "io.loosers.redact"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCwfCUK50cfdhfs17tGxEePyJBKpp3AMQM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
