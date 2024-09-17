@@ -74,10 +74,15 @@ class _HomePageState extends State<HomePage> {
                       color: Theme.of(context).colorScheme.primary,
                     ),
                     SizedBox(height: 20),
-                    Text(
-                      _file?.name ?? 'No file selected',
-                      style: Theme.of(context).textTheme.bodyLarge,
-                      textAlign: TextAlign.center,
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      child: Text(
+                        _file?.name ?? 'No file selected',
+                        style: Theme.of(context).textTheme.bodyLarge,
+                        textAlign: TextAlign.center,
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
+                      ),
                     ),
                     SizedBox(height: 20),
                     ElevatedButton(
@@ -85,7 +90,8 @@ class _HomePageState extends State<HomePage> {
                       child: Text('Choose File'),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Theme.of(context).colorScheme.primary,
-                        foregroundColor: Theme.of(context).colorScheme.onPrimary,
+                        foregroundColor:
+                            Theme.of(context).colorScheme.onPrimary,
                       ),
                     ),
                   ],
@@ -124,16 +130,22 @@ class _HomePageState extends State<HomePage> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text(
-            '$label: ',
-            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                  color: Colors.white70,
-                  fontWeight: FontWeight.w500,
-                ),
+          Expanded(
+            child: Text(
+              '$label: ',
+              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                    color: Colors.white70,
+                    fontWeight: FontWeight.w500,
+                  ),
+            ),
           ),
-          Text(
-            value,
-            style: Theme.of(context).textTheme.bodyLarge,
+          Expanded(
+            child: Text(
+              value,
+              style: Theme.of(context).textTheme.bodyLarge,
+              overflow: TextOverflow.ellipsis,
+              textAlign: TextAlign.start,
+            ),
           ),
         ],
       ),
