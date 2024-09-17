@@ -59,5 +59,5 @@ class AppTheme {
     );
   }
 
-  // You can add more themes here if needed, like lightTheme
+  
 }
