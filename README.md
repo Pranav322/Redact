@@ -69,6 +69,6 @@ no license you can steal it
   <img src="screenshots/home_page.jpg" width="200" /> 
   
   <img src="screenshots/history_page.jpg" width="200" />
-  <img src="screenshots/keys_page" width="200" />
+  <img src="screenshots/keys_page.jpg" width="200" />
   <img src="screenshots/settings_page.jpg" width="200" />
 </p>
