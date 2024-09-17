@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:redact/pages/home_page.dart';
-import 'package:redact/pages/history_page.dart';
-import 'package:redact/pages/keys_page.dart';
-import 'package:redact/pages/settings_page.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'pages/home_page.dart';
+import 'pages/history_page.dart';
+import 'pages/keys_page.dart';
+import 'pages/settings_page.dart';
 
 class MainScreen extends StatefulWidget {
   @override
@@ -40,9 +41,41 @@ class _MainScreenState extends State<MainScreen> {
     );
   }
 
+  String _getTitle() {
+    switch (_currentIndex) {
+      case 0: return 'Home';
+      case 1: return 'History';
+      case 2: return 'Keys';
+      case 3: return 'Settings';
+      default: return 'Redact';
+    }
+  }
+
+  Future<void> _logout() async {
+    try {
+      await FirebaseAuth.instance.signOut();
+      // The StreamBuilder in main.dart will handle navigation
+    } catch (e) {
+      print("Error during logout: $e");
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Failed to log out. Please try again.')),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text(_getTitle(), style: Theme.of(context).textTheme.titleLarge),
+        backgroundColor: Theme.of(context).primaryColor,
+        actions: [
+          IconButton(
+            icon: Icon(Icons.logout),
+            onPressed: _logout,
+          ),
+        ],
+      ),
       body: PageView(
         controller: _pageController,
         onPageChanged: _onPageChanged,
@@ -52,9 +85,9 @@ class _MainScreenState extends State<MainScreen> {
         currentIndex: _currentIndex,
         onTap: _onItemTapped,
         type: BottomNavigationBarType.fixed,
-        backgroundColor: Color(0xFF16213E),
-        selectedItemColor: Color(0xFFE94560),
-        unselectedItemColor: Colors.grey,
+        backgroundColor: Theme.of(context).colorScheme.surface,
+        selectedItemColor: Theme.of(context).colorScheme.primary,
+        unselectedItemColor: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
         items: [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
           BottomNavigationBarItem(icon: Icon(Icons.history), label: 'History'),
