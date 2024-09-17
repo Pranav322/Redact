@@ -64,8 +64,11 @@ no license you can steal it
 ## Screenshots
 
 <p float="left">
-  <img src="screenshots/login_screen.png" width="200" />
-
-  <img src="screenshots/home_screen.png" width="200" /> 
-  <img src="screenshots/file_upload_screen.png" width="200" />
+  <img src="screenshots/login_page.jpg" width="200" />
+<img src="screenshots/register_page.jpg" width="200" />
+  <img src="screenshots/home_page.jpg" width="200" /> 
+  
+  <img src="screenshots/history_page.jpg" width="200" />
+  <img src="screenshots/keys_page" width="200" />
+  <img src="screenshots/settings_page.jpg" width="200" />
 </p>
