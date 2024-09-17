@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'register_page.dart';
-import 'dashboard_page.dart';
+import '../home_page.dart';
 
-class LoginPage extends StatefulWidget {
+class RegisterPage extends StatefulWidget {
   @override
-  _LoginPageState createState() => _LoginPageState();
+  _RegisterPageState createState() => _RegisterPageState();
 }
 
-class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMixin {
+class _RegisterPageState extends State<RegisterPage> with SingleTickerProviderStateMixin {
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  final _confirmPasswordController = TextEditingController();
   late AnimationController _animationController;
   late Animation<double> _fadeAnimation;
   late Animation<double> _scaleAnimation;
@@ -37,19 +37,20 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
     _animationController.dispose();
     _emailController.dispose();
     _passwordController.dispose();
+    _confirmPasswordController.dispose();
     super.dispose();
   }
 
-  Future<void> _login() async {
+  Future<void> _register() async {
     if (_formKey.currentState!.validate()) {
       try {
-        await FirebaseAuth.instance.signInWithEmailAndPassword(
+        await FirebaseAuth.instance.createUserWithEmailAndPassword(
           email: _emailController.text.trim(),
           password: _passwordController.text,
         );
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => DashboardPage()),
+          MaterialPageRoute(builder: (context) => HomePage()),
         );
       } on FirebaseAuthException catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -59,32 +60,12 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
     }
   }
 
-  void _navigateToRegister() {
-    _animationController.reverse().then((_) {
-      Navigator.of(context).push(
-        PageRouteBuilder(
-          pageBuilder: (context, animation, secondaryAnimation) => RegisterPage(),
-          transitionsBuilder: (context, animation, secondaryAnimation, child) {
-            return FadeTransition(
-              opacity: animation,
-              child: ScaleTransition(
-                scale: Tween<double>(begin: 0.8, end: 1.0).animate(animation),
-                child: child,
-              ),
-            );
-          },
-          transitionDuration: Duration(milliseconds: 500),
-        ),
-      );
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
 
     return Scaffold(
-      backgroundColor: Color(0xFF1A1A2E),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: SafeArea(
         child: Center(
           child: FadeTransition(
@@ -92,15 +73,15 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
             child: ScaleTransition(
               scale: _scaleAnimation,
               child: Container(
-                height: size.height * 0.60,
+                height: size.height * 0.70,
                 width: size.width * 0.9,
                 padding: EdgeInsets.all(20),
                 decoration: BoxDecoration(
-                  color: Color(0xFF16213E),
+                  color: Theme.of(context).colorScheme.surface,
                   borderRadius: BorderRadius.circular(20),
                   boxShadow: [
                     BoxShadow(
-                      color: Color(0xFF0F3460).withOpacity(0.5),
+                      color: Theme.of(context).colorScheme.secondary.withOpacity(0.5),
                       blurRadius: 20,
                       offset: Offset(0, 10),
                     ),
@@ -114,18 +95,14 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
                         Icon(
-                          Icons.lock,
+                          Icons.account_circle,
                           size: 60,
-                          color: Color(0xFFE94560),
+                          color: Theme.of(context).colorScheme.primary,
                         ),
                         SizedBox(height: 20),
                         Text(
-                          'Secure Login',
-                          style: TextStyle(
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          ),
+                          'Create Account',
+                          style: Theme.of(context).textTheme.headline6,
                           textAlign: TextAlign.center,
                         ),
                         SizedBox(height: 30),
@@ -153,26 +130,34 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
                             return null;
                           },
                         ),
+                        SizedBox(height: 20),
+                        InputField(
+                          controller: _confirmPasswordController,
+                          hint: 'Confirm Password',
+                          icon: Icons.lock,
+                          isPassword: true,
+                          validator: (value) {
+                            if (value != _passwordController.text) {
+                              return 'Passwords do not match';
+                            }
+                            return null;
+                          },
+                        ),
                         SizedBox(height: 30),
                         ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Color(0xFFE94560),
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
-                            padding: EdgeInsets.symmetric(vertical: 15),
-                          ),
-                          onPressed: _login,
+                          onPressed: _register,
                           child: Text(
-                            'SECURE LOGIN',
-                            style: TextStyle(fontSize: 18, color: Colors.white),
+                            'REGISTER',
+                            style: TextStyle(fontSize: 18),
                           ),
                         ),
                         SizedBox(height: 20),
                         GestureDetector(
-                          onTap: _navigateToRegister,
+                          onTap: () => Navigator.pop(context),
                           child: Text(
-                            "New user? Create account",
+                            "Already have an account? Login",
                             style: TextStyle(
-                              color: Color(0xFFE94560),
+                              color: Theme.of(context).colorScheme.primary,
                               fontSize: 16,
                               fontWeight: FontWeight.w600,
                             ),
@@ -212,21 +197,10 @@ class InputField extends StatelessWidget {
     return TextFormField(
       controller: controller,
       obscureText: isPassword,
-      style: TextStyle(color: Colors.white),
+      style: Theme.of(context).textTheme.bodyText1,
       decoration: InputDecoration(
         hintText: hint,
-        hintStyle: TextStyle(color: Colors.grey[400]),
-        prefixIcon: Icon(icon, color: Color(0xFFE94560)),
-        enabledBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.grey[700]!),
-          borderRadius: BorderRadius.circular(10),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Color(0xFFE94560)),
-          borderRadius: BorderRadius.circular(10),
-        ),
-        filled: true,
-        fillColor: Color(0xFF0F3460),
+        prefixIcon: Icon(icon, color: Theme.of(context).colorScheme.primary),
       ),
       validator: validator,
     );

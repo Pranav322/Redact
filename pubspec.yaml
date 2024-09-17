@@ -38,6 +38,8 @@ dependencies:
   firebase_auth: ^5.2.0
   firebase_core: ^3.4.0
   file_picker: ^8.0.5
+  open_file: ^3.5.3
+  google_fonts: ^6.2.1
 
 dev_dependencies:
   flutter_test:

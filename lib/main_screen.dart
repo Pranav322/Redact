@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:redact/dashboard_page.dart';
+import 'package:redact/home_page.dart';
 import 'package:redact/history_page.dart';
 import 'package:redact/keys_page.dart';
 import 'package:redact/settings_page.dart';
@@ -14,7 +14,7 @@ class _MainScreenState extends State<MainScreen> {
   final PageController _pageController = PageController();
 
   final List<Widget> _pages = [
-    DashboardPage(),
+    HomePage(),
     HistoryPage(),
     KeysPage(),
     SettingsPage(),
