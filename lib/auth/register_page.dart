@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../pages/home_page.dart';
+import '../auth/login_page.dart';
 
 class RegisterPage extends StatefulWidget {
   @override
   _RegisterPageState createState() => _RegisterPageState();
 }
 
-class _RegisterPageState extends State<RegisterPage> with SingleTickerProviderStateMixin {
+class _RegisterPageState extends State<RegisterPage>
+    with SingleTickerProviderStateMixin {
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
@@ -81,7 +83,10 @@ class _RegisterPageState extends State<RegisterPage> with SingleTickerProviderSt
                   borderRadius: BorderRadius.circular(20),
                   boxShadow: [
                     BoxShadow(
-                      color: Theme.of(context).colorScheme.secondary.withOpacity(0.5),
+                      color: Theme.of(context)
+                          .colorScheme
+                          .secondary
+                          .withOpacity(0.5),
                       blurRadius: 20,
                       offset: Offset(0, 10),
                     ),
@@ -153,7 +158,12 @@ class _RegisterPageState extends State<RegisterPage> with SingleTickerProviderSt
                         ),
                         SizedBox(height: 20),
                         GestureDetector(
-                          onTap: () => Navigator.pop(context),
+                          onTap: () {
+                            Navigator.of(context).pushReplacement(
+                              MaterialPageRoute(
+                                  builder: (context) => LoginPage()),
+                            );
+                          },
                           child: Text(
                             "Already have an account? Login",
                             style: TextStyle(
