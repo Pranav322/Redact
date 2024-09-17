@@ -1,16 +1,71 @@
-# redact
+# Redact
 
-A new Flutter project.
+Bad me bataunga kya hai redact
+
+## Features
+
+- Secure user authentication
+- File upload and management
+- baki bad me
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+abhi bana nahi hai 
 
-A few resources to get you started if this is your first Flutter project:
+### Prerequisites
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+- Laptop
+- Baki khud se pata karo
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+
+### Installation
+
+1. Clone the repository:
+   ```
+   git clone https://github.com/yourusername/redact.git
+   ```
+
+2. Navigate to the project directory:
+   ```
+   cd redact
+   ```
+
+3. Install dependencies:
+   ```
+   flutter pub get
+   ```
+
+4. Run the app:
+   ```
+   flutter run
+   ```
+
+## Project Structure
+
+- `lib/`: Contains the main Dart code for the application
+  - `main.dart`: Entry point of the application
+  - `main_screen.dart`: second entry point , decides the navigation and responsible to bottomnavbar
+  - `pages/`: Individual pages of the app
+  - `screens/`: screens
+  - `auth/` : login and register page sits here
+
+## Contributing
+
+banne toh do 
+
+## License
+
+no license you can steal it
+
+## Acknowledgments
+
+- kisi ko nahi karunga
+
+## Screenshots
+
+<p float="left">
+  <img src="screenshots/login_screen.png" width="200" />
+  
+  <img src="screenshots/home_screen.png" width="200" /> 
+  <img src="screenshots/file_upload_screen.png" width="200" />
+</p>
