@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:redact/home_page.dart';
-import 'package:redact/history_page.dart';
-import 'package:redact/keys_page.dart';
-import 'package:redact/settings_page.dart';
+import 'package:redact/pages/home_page.dart';
+import 'package:redact/pages/history_page.dart';
+import 'package:redact/pages/keys_page.dart';
+import 'package:redact/pages/settings_page.dart';
 
 class MainScreen extends StatefulWidget {
   @override
