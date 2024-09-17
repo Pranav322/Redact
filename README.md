@@ -22,7 +22,7 @@ abhi bana nahi hai
 
 1. Clone the repository:
    ```
-   git clone https://github.com/yourusername/redact.git
+   git clone https://github.com/Pranav322/redact.git
    ```
 
 2. Navigate to the project directory:
@@ -65,7 +65,7 @@ no license you can steal it
 
 <p float="left">
   <img src="screenshots/login_screen.png" width="200" />
-  
+
   <img src="screenshots/home_screen.png" width="200" /> 
   <img src="screenshots/file_upload_screen.png" width="200" />
 </p>
