@@ -4,7 +4,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:file_picker/file_picker.dart';
 import 'auth/login_page.dart';
 import 'main_screen.dart';
-import 'package:redact/themes/theme.dart';  
+import 'package:redact/themes/theme.dart';
+import 'welcom_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -19,14 +20,14 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Redact',
-      theme: AppTheme.darkTheme,  // Use the theme from app_theme.dart
+      theme: AppTheme.darkTheme,
       home: StreamBuilder<User?>(
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.active) {
             User? user = snapshot.data;
             if (user == null) {
-              return LoginPage();
+              return WelcomeScreen();
             }
             return MainScreen();
           }
