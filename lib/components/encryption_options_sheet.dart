@@ -25,75 +25,81 @@ class _EncryptionOptionsSheetState extends State<EncryptionOptionsSheet> {
 
   final List<EncryptionOption> _options = [
     EncryptionOption(
-      title: "Standard Encryption",
-      tag: "Free",
+      title: "Basic Redaction",
+      tag: "Online / Offline",
       description: [
-        "Basic level encryption",
-        "Suitable for personal use",
-        "Limited file size support"
+        "Patti lgaane vaala",
+        "dekh lo kaam kre to",
+        "kar jayega bharosa rkho"
       ],
     ),
     EncryptionOption(
-      title: "Advanced Encryption",
-      tag: "Pro",
+      title: "Intermediate Redaction",
+      tag: "Online / Offline",
+      description: ["Thik thak security", "ha ha ha", "Kaam krega"],
+    ),
+    EncryptionOption(
+      title: "Advanced Redaction",
+      tag: "Online",
       description: [
-        "Military-grade encryption",
-        "Suitable for business use",
-        "Unlimited file size support"
+        "Blockchain level security",
+        "Kuchh Kuchh",
+        "Aur v kuchh kuchh"
       ],
     ),
     EncryptionOption(
-      title: "Custom Encryption",
-      tag: "Enterprise",
+      title: "Non Recoverable Redaction",
+      tag: "Online",
       description: [
-        "Customizable encryption algorithms",
-        "Dedicated support team",
-        "Compliance with industry standards"
-      ],
-    ),
-    EncryptionOption(
-      title: "Quantum Encryption",
-      tag: "Experimental",
-      description: [
-        "Next-gen quantum-resistant algorithms",
-        "Cutting-edge security features",
-        "Early access to new technologies"
+        "Once redacted, the data cannot be recovered",
+        "May not work as expected on all file types",
+        "Kuch aur v likh do"
       ],
     ),
   ];
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(16),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Text(
-            "Choose Encryption Option",
-            style: Theme.of(context).textTheme.labelLarge,
-          ),
-          SizedBox(height: 16),
-          ..._options.asMap().entries.map((entry) {
-            int index = entry.key;
-            EncryptionOption option = entry.value;
-            return _buildAccordion(index, option);
-          }),
-          SizedBox(height: 16),
-          ElevatedButton(
-            onPressed: _selectedOption != null
-                ? () => widget.onProceed(_selectedOption!)
-                : null,
-            child: Text("Proceed"),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Theme.of(context).colorScheme.primary,
-              foregroundColor: Colors.white,
-              minimumSize: Size(double.infinity, 50),
+    return LayoutBuilder(builder: (context, constraints) {
+      return SingleChildScrollView(
+        child: ConstrainedBox(
+          constraints: BoxConstraints(minHeight: constraints.maxHeight),
+          child: IntrinsicHeight(
+            child: Padding(
+              padding: EdgeInsets.all(16),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    "Choose Redaction Option",
+                    style: Theme.of(context).textTheme.labelLarge,
+                  ),
+                  SizedBox(height: 16),
+                  ..._options.asMap().entries.map((entry) {
+                    int index = entry.key;
+                    EncryptionOption option = entry.value;
+                    return _buildAccordion(index, option);
+                  }),
+                  Spacer(),
+                  SizedBox(height: 16),
+                  ElevatedButton(
+                    onPressed: _selectedOption != null
+                        ? () => widget.onProceed(_selectedOption!)
+                        : null,
+                    child: Text("Proceed"),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Theme.of(context).colorScheme.primary,
+                      foregroundColor: Colors.white,
+                      minimumSize: Size(double.infinity, 50),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
-        ],
-      ),
-    );
+        ),
+      );
+    });
   }
 
   Widget _buildAccordion(int index, EncryptionOption option) {
@@ -125,41 +131,50 @@ class _EncryptionOptionsSheetState extends State<EncryptionOptionsSheet> {
             });
           },
         ),
-        if (isExpanded)
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                ...option.description.map((desc) => Padding(
-                      padding: EdgeInsets.only(bottom: 4),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text("• "),
-                          Expanded(child: Text(desc)),
-                        ],
-                      ),
-                    )),
-                SizedBox(height: 8),
-                Row(
+        AnimatedCrossFade(
+          firstChild: SizedBox(height: 0),
+          secondChild: _buildAccordionContent(option),
+          crossFadeState:
+              isExpanded ? CrossFadeState.showSecond : CrossFadeState.showFirst,
+          duration: Duration(milliseconds: 300),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildAccordionContent(EncryptionOption option) {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          ...option.description.map((desc) => Padding(
+                padding: EdgeInsets.only(bottom: 4),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Radio<int>(
-                      value: index,
-                      groupValue: _selectedOption,
-                      onChanged: (int? value) {
-                        setState(() {
-                          _selectedOption = value;
-                        });
-                      },
-                    ),
-                    Text("Agree to Terms & Conditions"),
+                    Text("• "),
+                    Expanded(child: Text(desc)),
                   ],
                 ),
-              ],
-            ),
+              )),
+          SizedBox(height: 8),
+          Row(
+            children: [
+              Radio<int>(
+                value: _options.indexOf(option),
+                groupValue: _selectedOption,
+                onChanged: (int? value) {
+                  setState(() {
+                    _selectedOption = value;
+                  });
+                },
+              ),
+              Text("Agree and would like to proceed"),
+            ],
           ),
-      ],
+        ],
+      ),
     );
   }
 }

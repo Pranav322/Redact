@@ -92,16 +92,13 @@ class _HomePageState extends State<HomePage> {
           maxChildSize: 0.9,
           expand: false,
           builder: (_, controller) {
-            return SingleChildScrollView(
-              controller: controller,
-              child: EncryptionOptionsSheet(
-                onProceed: (int selectedOption) {
-                  // Handle the selected encryption option
-                  print("Selected option: $selectedOption");
-                  Navigator.pop(context);
-                  // TODO: Implement encryption logic
-                },
-              ),
+            return EncryptionOptionsSheet(
+              onProceed: (int selectedOption) {
+                // Handle the selected encryption option
+                print("Selected option: $selectedOption");
+                Navigator.pop(context);
+                // TODO: Implement encryption logic
+              },
             );
           },
         );
@@ -235,7 +232,7 @@ class _HomePageState extends State<HomePage> {
                       child: ElevatedButton.icon(
                         onPressed: _showEncryptionOptions,
                         icon: Icon(Icons.lock),
-                        label: Text("Encrypt"),
+                        label: Text("Redact"),
                         style: ElevatedButton.styleFrom(
                           backgroundColor:
                               Theme.of(context).colorScheme.primary,
