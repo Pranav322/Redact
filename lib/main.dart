@@ -5,7 +5,9 @@ import 'package:file_picker/file_picker.dart';
 import 'auth/login_page.dart';
 import 'main_screen.dart';
 import 'package:redact/themes/theme.dart';
-import 'welcom_page.dart';
+
+import 'welcome_screen.dart';
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -41,3 +43,4 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+

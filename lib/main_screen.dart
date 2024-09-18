@@ -43,11 +43,16 @@ class _MainScreenState extends State<MainScreen> {
 
   String _getTitle() {
     switch (_currentIndex) {
-      case 0: return 'Home';
-      case 1: return 'History';
-      case 2: return 'Keys';
-      case 3: return 'Settings';
-      default: return 'Redact';
+      case 0:
+        return 'Home';
+      case 1:
+        return 'History';
+      case 2:
+        return 'Keys';
+      case 3:
+        return 'Settings';
+      default:
+        return 'Redact';
     }
   }
 
@@ -70,10 +75,7 @@ class _MainScreenState extends State<MainScreen> {
         title: Text(_getTitle(), style: Theme.of(context).textTheme.titleLarge),
         backgroundColor: Theme.of(context).primaryColor,
         actions: [
-          IconButton(
-            icon: Icon(Icons.logout),
-            onPressed: _logout,
-          ),
+          _buildAnimatedPopupMenu(),
         ],
       ),
       body: PageView(
@@ -87,13 +89,60 @@ class _MainScreenState extends State<MainScreen> {
         type: BottomNavigationBarType.fixed,
         backgroundColor: Theme.of(context).colorScheme.surface,
         selectedItemColor: Theme.of(context).colorScheme.primary,
-        unselectedItemColor: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
-        items: [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          BottomNavigationBarItem(icon: Icon(Icons.history), label: 'History'),
-          BottomNavigationBarItem(icon: Icon(Icons.vpn_key), label: 'Keys'),
-          BottomNavigationBarItem(icon: Icon(Icons.settings), label: 'Settings'),
+        unselectedItemColor:
+            Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+        items: const [
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
+          BottomNavigationBarItem(icon: Icon(Icons.history), label: "History"),
+          BottomNavigationBarItem(icon: Icon(Icons.vpn_key), label: "Keys"),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.settings), label: "Settings"),
         ],
+      ),
+    );
+  }
+
+  Widget _buildAnimatedPopupMenu() {
+    return PopupMenuButton<String>(
+      offset: Offset(0, 56),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      icon: CircleAvatar(
+        child: Icon(Icons.person),
+        radius: 16,
+      ),
+      itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+        _buildAnimatedMenuItem("profile", Icons.person, "My Profile"),
+        _buildAnimatedMenuItem("logout", Icons.logout, "Logout"),
+      ],
+      onSelected: (String value) {
+        if (value == "profile") {
+          // TODO: Navigate to profile page
+        } else if (value == "logout") {
+          _logout();
+        }
+      },
+    );
+  }
+
+  PopupMenuEntry<String> _buildAnimatedMenuItem(
+      String value, IconData icon, String text) {
+    return PopupMenuItem<String>(
+      value: value,
+      child: TweenAnimationBuilder<double>(
+        tween: Tween(begin: 0.0, end: 1.0),
+        duration: Duration(milliseconds: 300),
+        builder: (BuildContext context, double value, Widget? child) {
+          return Transform.scale(
+            scale: value,
+            child: Opacity(
+              opacity: value,
+              child: ListTile(
+                leading: Icon(icon),
+                title: Text(text),
+              ),
+            ),
+          );
+        },
       ),
     );
   }

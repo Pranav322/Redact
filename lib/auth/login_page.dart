@@ -121,7 +121,7 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
                         SizedBox(height: 20),
                         Text(
                           'Secure Login',
-                          style: Theme.of(context).textTheme.headline6,
+                          style: Theme.of(context).textTheme.titleLarge,
   textAlign: TextAlign.center,
                         ),
                         SizedBox(height: 30),
