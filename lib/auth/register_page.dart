@@ -107,7 +107,7 @@ class _RegisterPageState extends State<RegisterPage>
                         SizedBox(height: 20),
                         Text(
                           'Create Account',
-                          style: Theme.of(context).textTheme.headline6,
+                          style: Theme.of(context).textTheme.titleLarge,
                           textAlign: TextAlign.center,
                         ),
                         SizedBox(height: 30),
@@ -207,7 +207,7 @@ class InputField extends StatelessWidget {
     return TextFormField(
       controller: controller,
       obscureText: isPassword,
-      style: Theme.of(context).textTheme.bodyText1,
+      style: Theme.of(context).textTheme.bodyLarge,
       decoration: InputDecoration(
         hintText: hint,
         prefixIcon: Icon(icon, color: Theme.of(context).colorScheme.primary),
