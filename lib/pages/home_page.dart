@@ -178,9 +178,12 @@ class _HomePageState extends State<HomePage> {
                     ),
                     SizedBox(height: 20),
                     Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 10),
+
+                     
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
                       child: Text(
-                        _file?.name ?? "No file selected",
+                        _file?.name ?? 'No file selected',
+
                         style: Theme.of(context).textTheme.bodyLarge,
                         textAlign: TextAlign.center,
                         overflow: TextOverflow.ellipsis,
@@ -256,22 +259,27 @@ class _HomePageState extends State<HomePage> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          SizedBox(
-            width: 100,
+
+          
+
+          Expanded(
             child: Text(
-              "$label: ",
+              '$label: ',
+
               style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                     color: Colors.white70,
                     fontWeight: FontWeight.w500,
                   ),
             ),
           ),
-          Expanded(
+          Expannded(
+
             child: Text.rich(
               TextSpan(text: value),
               style: Theme.of(context).textTheme.bodyLarge,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
+
             ),
           ),
         ],
