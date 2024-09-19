@@ -1,19 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:redact/monkey_face.dart';
 
 class EncryptionOption {
   final String title;
   final String tag;
   final List<String> description;
 
-  EncryptionOption(
-      {required this.title, required this.tag, required this.description});
+  EncryptionOption({required this.title, required this.tag, required this.description});
 }
 
 class EncryptionOptionsSheet extends StatefulWidget {
   final Function(int) onProceed;
 
-  const EncryptionOptionsSheet({Key? key, required this.onProceed})
-      : super(key: key);
+  const EncryptionOptionsSheet({Key? key, required this.onProceed}) : super(key: key);
 
   @override
   _EncryptionOptionsSheetState createState() => _EncryptionOptionsSheetState();
@@ -22,6 +21,7 @@ class EncryptionOptionsSheet extends StatefulWidget {
 class _EncryptionOptionsSheetState extends State<EncryptionOptionsSheet> {
   int? _selectedOption;
   int _expandedIndex = 0;
+  double _eyeOpenness = 1.0;
 
   final List<EncryptionOption> _options = [
     EncryptionOption(
@@ -58,50 +58,59 @@ class _EncryptionOptionsSheetState extends State<EncryptionOptionsSheet> {
     ),
   ];
 
-  @override
+  void _updateEyeOpenness(int? option) {
+    if (option != null) {
+      setState(() {
+        _selectedOption = option;
+        _eyeOpenness = 1.0 - (option / (_options.length - 1));
+      });
+    }
+  }
+
+   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (context, constraints) {
       return SingleChildScrollView(
         child: ConstrainedBox(
           constraints: BoxConstraints(minHeight: constraints.maxHeight),
-          child: IntrinsicHeight(
-            child: Padding(
-              padding: EdgeInsets.all(16),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    "Choose Redaction Option",
-                    style: Theme.of(context).textTheme.labelLarge,
+          child: Padding(
+            padding: EdgeInsets.all(16),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  "Choose Redaction Option",
+                  style: Theme.of(context).textTheme.labelLarge,
+                ),
+                SizedBox(height: 16),
+                MonkeyFace(
+                  eyeOpenness: _eyeOpenness,
+                ),
+                SizedBox(height: 16),
+                ..._options.asMap().entries.map((entry) {
+                  int index = entry.key;
+                  EncryptionOption option = entry.value;
+                  return _buildAccordion(index, option);
+                }),
+                SizedBox(height: 16),
+                ElevatedButton(
+                  onPressed: _selectedOption != null
+                      ? () => widget.onProceed(_selectedOption!)
+                      : null,
+                  child: Text("Proceed"),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Theme.of(context).colorScheme.primary,
+                    foregroundColor: Colors.white,
+                    minimumSize: Size(double.infinity, 50),
                   ),
-                  SizedBox(height: 16),
-                  ..._options.asMap().entries.map((entry) {
-                    int index = entry.key;
-                    EncryptionOption option = entry.value;
-                    return _buildAccordion(index, option);
-                  }),
-                  Spacer(),
-                  SizedBox(height: 16),
-                  ElevatedButton(
-                    onPressed: _selectedOption != null
-                        ? () => widget.onProceed(_selectedOption!)
-                        : null,
-                    child: Text("Proceed"),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Theme.of(context).colorScheme.primary,
-                      foregroundColor: Colors.white,
-                      minimumSize: Size(double.infinity, 50),
-                    ),
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),
       );
     });
   }
-
   Widget _buildAccordion(int index, EncryptionOption option) {
     bool isExpanded = _expandedIndex == index;
     return Column(
@@ -109,7 +118,9 @@ class _EncryptionOptionsSheetState extends State<EncryptionOptionsSheet> {
         ListTile(
           title: Row(
             children: [
-              Text(option.title),
+              Expanded(
+                child: Text(option.title),
+              ),
               SizedBox(width: 8),
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
@@ -133,7 +144,7 @@ class _EncryptionOptionsSheetState extends State<EncryptionOptionsSheet> {
         ),
         AnimatedCrossFade(
           firstChild: SizedBox(height: 0),
-          secondChild: _buildAccordionContent(option),
+          secondChild: _buildAccordionContent(option, index),
           crossFadeState:
               isExpanded ? CrossFadeState.showSecond : CrossFadeState.showFirst,
           duration: Duration(milliseconds: 300),
@@ -142,7 +153,7 @@ class _EncryptionOptionsSheetState extends State<EncryptionOptionsSheet> {
     );
   }
 
-  Widget _buildAccordionContent(EncryptionOption option) {
+  Widget _buildAccordionContent(EncryptionOption option, int index) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: Column(
@@ -162,12 +173,10 @@ class _EncryptionOptionsSheetState extends State<EncryptionOptionsSheet> {
           Row(
             children: [
               Radio<int>(
-                value: _options.indexOf(option),
+                value: index,
                 groupValue: _selectedOption,
                 onChanged: (int? value) {
-                  setState(() {
-                    _selectedOption = value;
-                  });
+                  _updateEyeOpenness(value);
                 },
               ),
               Text("Agree and would like to proceed"),
