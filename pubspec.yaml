@@ -43,9 +43,10 @@ dependencies:
   firebase_auth: ^5.2.0
 
   
-  carousel_slider: ^4.2.1
 
   url_launcher: ^6.3.0
+  flutter_svg: ^2.0.10+1
+  simple_animations: ^5.0.2
 
 dev_dependencies:
   flutter_test:
@@ -73,6 +74,7 @@ flutter:
   assets:
     - assets/welcome1.png
     - assets/welcome2.png
+    - assets/monkey_face.svg
 
     
     

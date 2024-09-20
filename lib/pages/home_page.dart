@@ -11,36 +11,6 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   PlatformFile? _file;
-  final PageController _pageController = PageController(initialPage: 0);
-  int _currentPage = 0;
-
-  @override
-  void initState() {
-    super.initState();
-    _startAutoPlay();
-  }
-
-  @override
-  void dispose() {
-    _pageController.dispose();
-    super.dispose();
-  }
-
-  void _startAutoPlay() {
-    Future.delayed(Duration(seconds: 3), () {
-      if (_currentPage < 2) {
-        _currentPage++;
-      } else {
-        _currentPage = 0;
-      }
-      _pageController.animateToPage(
-        _currentPage,
-        duration: Duration(milliseconds: 800),
-        curve: Curves.fastOutSlowIn,
-      );
-      _startAutoPlay();
-    });
-  }
 
   Future<void> _pickFile() async {
     try {
@@ -97,8 +67,10 @@ class _HomePageState extends State<HomePage> {
                 // Handle the selected encryption option
                 print("Selected option: $selectedOption");
                 Navigator.pop(context);
+
                 // TODO: Implement encryption logic
               },
+              heightFactor: 0.8,
             );
           },
         );
@@ -115,49 +87,6 @@ class _HomePageState extends State<HomePage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Container(
-                height: 200,
-                child: PageView.builder(
-                  controller: _pageController,
-                  itemCount: 3,
-                  onPageChanged: (int page) {
-                    setState(() {
-                      _currentPage = page;
-                    });
-                  },
-                  itemBuilder: (context, index) {
-                    return Container(
-                      margin: EdgeInsets.symmetric(horizontal: 5.0),
-                      decoration: BoxDecoration(
-                        color: Colors.amber,
-                        borderRadius: BorderRadius.circular(8.0),
-                      ),
-                      child: Image.network(
-                        "https://picsum.photos/seed/${index + 1}/400/200",
-                        fit: BoxFit.cover,
-                      ),
-                    );
-                  },
-                ),
-              ),
-              SizedBox(height: 10),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: List.generate(
-                  3,
-                  (index) => Container(
-                    width: 8.0,
-                    height: 8.0,
-                    margin: EdgeInsets.symmetric(horizontal: 4.0),
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: _currentPage == index
-                          ? Theme.of(context).colorScheme.primary
-                          : Colors.grey,
-                    ),
-                  ),
-                ),
-              ),
               SizedBox(height: 30),
               Container(
                 width: 300,
@@ -178,12 +107,9 @@ class _HomePageState extends State<HomePage> {
                     ),
                     SizedBox(height: 20),
                     Padding(
-
-                     
                       padding: const EdgeInsets.symmetric(horizontal: 10),
                       child: Text(
                         _file?.name ?? 'No file selected',
-
                         style: Theme.of(context).textTheme.bodyLarge,
                         textAlign: TextAlign.center,
                         overflow: TextOverflow.ellipsis,
@@ -259,13 +185,9 @@ class _HomePageState extends State<HomePage> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-
-          
-
           Expanded(
             child: Text(
               '$label: ',
-
               style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                     color: Colors.white70,
                     fontWeight: FontWeight.w500,
@@ -273,13 +195,11 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
           Expanded(
-
             child: Text.rich(
               TextSpan(text: value),
               style: Theme.of(context).textTheme.bodyLarge,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
-
             ),
           ),
         ],

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:redact/monkey_face.dart';
+import 'package:redact/components/monkey_face.dart';
 
 class EncryptionOption {
   final String title;
@@ -11,8 +11,9 @@ class EncryptionOption {
 
 class EncryptionOptionsSheet extends StatefulWidget {
   final Function(int) onProceed;
+  final double heightFactor;
 
-  const EncryptionOptionsSheet({Key? key, required this.onProceed}) : super(key: key);
+  const EncryptionOptionsSheet({Key? key, required this.onProceed , this.heightFactor=0.8}) : super(key: key);
 
   @override
   _EncryptionOptionsSheetState createState() => _EncryptionOptionsSheetState();
@@ -62,52 +63,66 @@ class _EncryptionOptionsSheetState extends State<EncryptionOptionsSheet> {
     if (option != null) {
       setState(() {
         _selectedOption = option;
-        _eyeOpenness = 1.0 - (option / (_options.length - 1));
+        _eyeOpenness =  (option / (_options.length - 1));
       });
     }
   }
 
-   @override
+  @override
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (context, constraints) {
-      return SingleChildScrollView(
-        child: ConstrainedBox(
-          constraints: BoxConstraints(minHeight: constraints.maxHeight),
-          child: Padding(
+      return Column(
+        children: [
+          // Fixed content at the top
+          Padding(
             padding: EdgeInsets.all(16),
             child: Column(
-              mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
                   "Choose Redaction Option",
                   style: Theme.of(context).textTheme.labelLarge,
                 ),
                 SizedBox(height: 16),
-                MonkeyFace(
-                  eyeOpenness: _eyeOpenness,
-                ),
-                SizedBox(height: 16),
-                ..._options.asMap().entries.map((entry) {
-                  int index = entry.key;
-                  EncryptionOption option = entry.value;
-                  return _buildAccordion(index, option);
-                }),
-                SizedBox(height: 16),
-                ElevatedButton(
-                  onPressed: _selectedOption != null
-                      ? () => widget.onProceed(_selectedOption!)
-                      : null,
-                  child: Text("Proceed"),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Theme.of(context).colorScheme.primary,
-                    foregroundColor: Colors.white,
-                    minimumSize: Size(double.infinity, 50),
-                  ),
-                ),
+                MonkeyFace(eyeOpenness: _eyeOpenness),
               ],
             ),
           ),
-        ),
+          // Scrollable content
+          Expanded(
+            child: SingleChildScrollView(
+              // CHANGE: Add physics property to allow scrolling even when content doesn't overflow
+              physics: AlwaysScrollableScrollPhysics(),
+              child: Padding(
+                padding: EdgeInsets.all(16),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    ..._options.asMap().entries.map((entry) {
+                      int index = entry.key;
+                      EncryptionOption option = entry.value;
+                      return _buildAccordion(index, option);
+                    }),
+                    SizedBox(height: 16),
+                    ElevatedButton(
+                      onPressed: _selectedOption != null
+                          ? () => widget.onProceed(_selectedOption!)
+                          : null,
+                          
+                      child: Text("Proceed"),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Theme.of(context).colorScheme.primary,
+                        foregroundColor: Colors.white,
+                        minimumSize: Size(double.infinity, 50),
+                      ),
+                    ),
+                    // CHANGE: Add extra padding at the bottom to allow scrolling past the last item
+                    SizedBox(height: 100),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ],
       );
     });
   }
